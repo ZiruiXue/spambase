@@ -7,13 +7,11 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.naive_bayes import MultinomialNB
 
 
-
 #read data file
 data = pd.read_csv("spambase.data", header=None)
 data.rename(columns={57:'class'}, inplace=True)
 y = np.array(data.pop('class'))
 X = np.array(data)
-
 
 #cross validation
 kf = KFold(n_splits=5, shuffle=True)
@@ -31,12 +29,10 @@ for train_index, test_index in kf.split(X):
     #  split data
     X_train, X_test = X[train_index], X[test_index]
     y_train, y_test = y[train_index], y[test_index]
-
     # fit model
     clf.fit(X_train, y_train)
     y_pred = clf.predict(X_test)
     score = clf.score(X_test, y_test)
-
     # compute fpr, fnr, accuracy,error
     tn, fp, fn, tp = confusion_matrix(y_test, y_pred).ravel()
     fpr = fp / (tp + tn + fn + fp)
